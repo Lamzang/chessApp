@@ -24,7 +24,7 @@ export default function Square({ x, y, isBlack }: ISquare) {
   const [pieceData, setPieceData] = useRecoilState(pieceDataState);
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
-      accept: [chessPiece.KNIGHT, chessPiece.KING],
+      accept: chessPiece.PIECE,
       drop: (item: IDragItem) => {
         if (item.team === chessTeam.RED) {
           let oppoData = {};
@@ -67,14 +67,14 @@ export default function Square({ x, y, isBlack }: ISquare) {
             );
             oppoData = {
               ...newPieceData,
-              blue: [
+              red: [
                 ...newPieceData.red.slice(0, deadIndex),
                 [-20, -10],
                 ...newPieceData.red.slice(deadIndex + 1),
               ],
             };
           }
-          setPieceData(newPieceData);
+          setPieceData({ ...newPieceData, ...oppoData });
         }
       },
       canDrop: (item: IDragItem) => canMovePiece(item, x, y, pieceData),
@@ -110,6 +110,7 @@ export default function Square({ x, y, isBlack }: ISquare) {
         {isOver && canDrop && <Overlay color="green" />}
         {renderPiece(x, y, pieceData.red[0], "red", 0)}
         {renderPiece(x, y, pieceData.red[1], "red", 1)}
+        {renderPiece(x, y, pieceData.red[4], "red", 4)}
         {renderPiece(x, y, pieceData.blue[0], "blue", 0)}
       </div>
     </div>

@@ -4,8 +4,8 @@ import { chessPiece, chessTeam } from "../../constants/chessType";
 
 export default function RedKnight() {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: chessPiece.KNIGHT,
-    item: { id: 0, piece: chessPiece.KNIGHT, team: chessTeam.RED },
+    type: chessPiece.PIECE,
+    item: { id: 1, piece: chessPiece.KNIGHT, team: chessTeam.RED },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

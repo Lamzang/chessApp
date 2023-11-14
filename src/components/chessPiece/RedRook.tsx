@@ -1,10 +1,10 @@
 import { useDrag } from "react-dnd";
 import { chessPiece, chessTeam } from "../../constants/chessType";
 
-export default function BlueKnight() {
+export default function RedRook() {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: chessPiece.PIECE,
-    item: { id: 0, piece: chessPiece.KNIGHT, team: chessTeam.BLUE },
+    item: { id: 0, piece: chessPiece.ROOK, team: chessTeam.RED },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -14,14 +14,14 @@ export default function BlueKnight() {
       ref={drag}
       style={{
         fontSize: "40px",
-        color: "blue",
+        color: "red",
         opacity: isDragging ? 0.5 : 1,
         fontWeight: "bold",
         cursor: "move",
         zIndex: 2,
       }}
     >
-      ♘
+      ♜
     </div>
   );
 }
