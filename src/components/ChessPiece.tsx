@@ -1,10 +1,17 @@
 import { useDrag } from "react-dnd";
-import { chessPiece, chessTeam } from "../../constants/chessType";
+import { chessPiece } from "../constants/chessType";
 
-export default function RedKing() {
+interface IPiece {
+  id: number;
+  team: string;
+  category: string;
+  image: string;
+}
+
+export default function ChessPiece({ id, team, category, image }: IPiece) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: chessPiece.PIECE,
-    item: { id: 4, piece: chessPiece.KING, team: chessTeam.RED },
+    item: { id: id, piece: category, team: team },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -14,7 +21,7 @@ export default function RedKing() {
       ref={drag}
       style={{
         fontSize: "40px",
-        color: "red",
+        color: `${team}`,
         opacity: isDragging ? 0.5 : 1,
         fontWeight: "bold",
         cursor: "move",
@@ -24,7 +31,7 @@ export default function RedKing() {
         alignItems: "center",
       }}
     >
-      ♔
+      {image}
     </div>
   );
 }

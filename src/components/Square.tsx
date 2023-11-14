@@ -108,23 +108,31 @@ export default function Square({ x, y, isBlack }: ISquare) {
         {isOver && !canDrop && <Overlay color="red" />}
         {!isOver && canDrop && <Overlay color="yellow" />}
         {isOver && canDrop && <Overlay color="green" />}
-        {renderPiece(x, y, pieceData.red[0], "red", 0, 0)}
-        {renderPiece(x, y, pieceData.red[1], "red", 1, 1)}
-        {renderPiece(x, y, pieceData.red[2], "red", 2, 2)}
-        {renderPiece(x, y, pieceData.red[3], "red", 3, 3)}
-        {renderPiece(x, y, pieceData.red[4], "red", 4, 4)}
-        {renderPiece(x, y, pieceData.red[5], "red", 2, 5)}
-        {renderPiece(x, y, pieceData.red[6], "red", 1, 6)}
-        {renderPiece(x, y, pieceData.red[7], "red", 0, 7)}
-        {renderPiece(x, y, pieceData.red[8], "red", 8, 8)}
-        {renderPiece(x, y, pieceData.red[9], "red", 8, 9)}
-        {renderPiece(x, y, pieceData.red[10], "red", 8, 10)}
-        {renderPiece(x, y, pieceData.red[11], "red", 8, 11)}
-        {renderPiece(x, y, pieceData.red[12], "red", 8, 12)}
-        {renderPiece(x, y, pieceData.red[13], "red", 8, 13)}
-        {renderPiece(x, y, pieceData.red[14], "red", 8, 14)}
-        {renderPiece(x, y, pieceData.red[15], "red", 8, 15)}
-        {renderPiece(x, y, pieceData.blue[0], "blue", 0, 0)}
+        {renderPiece(x, y, pieceData.red[0], "red", chessPiece.ROOK, 0, "♖")}
+        {renderPiece(x, y, pieceData.red[1], "red", chessPiece.KNIGHT, 1, "♘")}
+        {renderPiece(x, y, pieceData.red[2], "red", chessPiece.BISHOP, 2, "♗")}
+        {renderPiece(x, y, pieceData.red[3], "red", chessPiece.QUEEN, 3, "♕")}
+        {renderPiece(x, y, pieceData.red[4], "red", chessPiece.KING, 4, "♔")}
+        {renderPiece(x, y, pieceData.red[5], "red", chessPiece.BISHOP, 5, "♗")}
+        {renderPiece(x, y, pieceData.red[6], "red", chessPiece.KNIGHT, 6, "♘")}
+        {renderPiece(x, y, pieceData.red[7], "red", chessPiece.ROOK, 7, "♖")}
+        {renderPiece(x, y, pieceData.red[8], "red", chessPiece.PAWN, 8, "♙")}
+        {renderPiece(x, y, pieceData.red[9], "red", chessPiece.PAWN, 9, "♙")}
+        {renderPiece(x, y, pieceData.red[10], "red", chessPiece.PAWN, 10, "♙")}
+        {renderPiece(x, y, pieceData.red[11], "red", chessPiece.PAWN, 11, "♙")}
+        {renderPiece(x, y, pieceData.red[12], "red", chessPiece.PAWN, 12, "♙")}
+        {renderPiece(x, y, pieceData.red[13], "red", chessPiece.PAWN, 13, "♙")}
+        {renderPiece(x, y, pieceData.red[14], "red", chessPiece.PAWN, 14, "♙")}
+        {renderPiece(x, y, pieceData.red[15], "red", chessPiece.PAWN, 15, "♙")}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[0],
+          "blue",
+          chessPiece.KNIGHT,
+          0,
+          "♘"
+        )}
       </div>
     </div>
   );
