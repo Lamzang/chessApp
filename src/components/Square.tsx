@@ -124,14 +124,101 @@ export default function Square({ x, y, isBlack }: ISquare) {
         {renderPiece(x, y, pieceData.red[13], "red", chessPiece.PAWN, 13, "♙")}
         {renderPiece(x, y, pieceData.red[14], "red", chessPiece.PAWN, 14, "♙")}
         {renderPiece(x, y, pieceData.red[15], "red", chessPiece.PAWN, 15, "♙")}
+        {renderPiece(x, y, pieceData.blue[0], "blue", chessPiece.ROOK, 0, "♖")}
         {renderPiece(
           x,
           y,
-          pieceData.blue[0],
+          pieceData.blue[1],
           "blue",
           chessPiece.KNIGHT,
-          0,
+          1,
           "♘"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[2],
+          "blue",
+          chessPiece.BISHOP,
+          2,
+          "♗"
+        )}
+        {renderPiece(x, y, pieceData.blue[3], "blue", chessPiece.QUEEN, 3, "♕")}
+        {renderPiece(x, y, pieceData.blue[4], "blue", chessPiece.KING, 4, "♔")}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[5],
+          "blue",
+          chessPiece.BISHOP,
+          5,
+          "♗"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[6],
+          "blue",
+          chessPiece.KNIGHT,
+          6,
+          "♘"
+        )}
+        {renderPiece(x, y, pieceData.blue[7], "blue", chessPiece.ROOK, 7, "♖")}
+        {renderPiece(x, y, pieceData.blue[8], "blue", chessPiece.PAWN, 8, "♙")}
+        {renderPiece(x, y, pieceData.blue[9], "blue", chessPiece.PAWN, 9, "♙")}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[10],
+          "blue",
+          chessPiece.PAWN,
+          10,
+          "♙"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[11],
+          "blue",
+          chessPiece.PAWN,
+          11,
+          "♙"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[12],
+          "blue",
+          chessPiece.PAWN,
+          12,
+          "♙"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[13],
+          "blue",
+          chessPiece.PAWN,
+          13,
+          "♙"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[14],
+          "blue",
+          chessPiece.PAWN,
+          14,
+          "♙"
+        )}
+        {renderPiece(
+          x,
+          y,
+          pieceData.blue[15],
+          "blue",
+          chessPiece.PAWN,
+          15,
+          "♙"
         )}
       </div>
     </div>
