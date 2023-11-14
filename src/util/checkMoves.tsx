@@ -10,36 +10,35 @@ export const canMovePiece = (
 ) => {
   console.log(pieceData.red);
   if (item.team === chessTeam.RED) {
-    if (pieceData.red.some(([px, py]) => px === toX && py === toY)) {
+    if (isTherePiece(toX, toY, pieceData.red)) {
       return false;
     }
-    if (item.piece === chessPiece.KNIGHT) {
-      return canMoveKnight(toX, toY, pieceData.red[item.id]);
-    } else if (item.piece === chessPiece.KING) {
-      return canMoveKing(toX, toY, pieceData.red[item.id]);
-    } else {
-      return false;
-    }
+    return checkPiece(item.piece, toX, toY, pieceData.red[item.id]);
   } else {
-    if (pieceData.blue.some(([px, py]) => px === toX && py === toY)) {
+    if (isTherePiece(toX, toY, pieceData.blue)) {
       return false;
     }
-    if (item.piece === chessPiece.KNIGHT) {
-      return canMoveKnight(toX, toY, pieceData.blue[item.id]);
-    } else if (item.piece === chessPiece.KING) {
-      return canMoveKing(toX, toY, pieceData.blue[item.id]);
-    } else {
-      return false;
-    }
+    return checkPiece(item.piece, toX, toY, pieceData.blue[item.id]);
   }
 };
 
-export const isTherePiece = (
+const isTherePiece = (toX: number, toY: number, positions: number[][]) => {
+  return positions.some(([px, py]) => px === toX && py === toY);
+};
+
+const checkPiece = (
+  piece: string,
   toX: number,
   toY: number,
-  positions: number[][]
+  position: number[]
 ) => {
-  return positions.some(([px, py]) => px === toX && py === toY);
+  if (piece === chessPiece.KNIGHT) {
+    return canMoveKnight(toX, toY, position);
+  } else if (piece === chessPiece.KING) {
+    return canMoveKing(toX, toY, position);
+  } else {
+    return false;
+  }
 };
 
 const canMoveKnight = (toX: number, toY: number, [x, y]: number[]) => {
