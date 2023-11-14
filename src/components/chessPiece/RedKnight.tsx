@@ -20,6 +20,9 @@ export default function RedKnight() {
         fontWeight: "bold",
         cursor: "move",
         zIndex: 2,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       ♘

@@ -12,23 +12,32 @@ export const canMovePiece = (
     if (isTherePiece(toX, toY, pieceData.red)) {
       return false;
     }
+    if (item.piece === chessPiece.PAWN) {
+      console.log(item.id);
+      return canMoveRedPawn(toX, toY, pieceData.red[item.id]);
+    }
     return checkPiece(
       item.piece,
       toX,
       toY,
       pieceData.red[item.id],
-      pieceData.red
+      pieceData.red,
+      pieceData.blue
     );
   } else {
     if (isTherePiece(toX, toY, pieceData.blue)) {
       return false;
+    }
+    if (item.piece === chessPiece.PAWN) {
+      return canMoveBluePawn(toX, toY, pieceData.blue[item.id]);
     }
     return checkPiece(
       item.piece,
       toX,
       toY,
       pieceData.blue[item.id],
-      pieceData.blue
+      pieceData.blue,
+      pieceData.red
     );
   }
 };
@@ -46,7 +55,8 @@ const checkPiece = (
   toX: number,
   toY: number,
   position: number[],
-  data: number[][]
+  data: number[][],
+  oppodata: number[][]
 ) => {
   if (piece === chessPiece.KNIGHT) {
     return canMoveKnight(toX, toY, position);
@@ -55,13 +65,28 @@ const checkPiece = (
   } else if (piece === chessPiece.ROOK) {
     return (
       canMoveRook(toX, toY, position) &&
-      isOverTherePiece(toX, toY, data, position)
+      canOrthogonal(toX, toY, data, position) &&
+      canOrthogonal(toX, toY, oppodata, position)
+    );
+  } else if (piece === chessPiece.BISHOP) {
+    return (
+      canMoveBishop(toX, toY, position) &&
+      canDigonal(toX, toY, data, position) &&
+      canDigonal(toX, toY, oppodata, position)
+    );
+  } else if (piece === chessPiece.QUEEN) {
+    return (
+      canMoveQueen(toX, toY, position) &&
+      canOrthogonal(toX, toY, data, position) &&
+      canOrthogonal(toX, toY, oppodata, position) &&
+      canDigonal(toX, toY, data, position) &&
+      canDigonal(toX, toY, oppodata, position)
     );
   } else {
     return false;
   }
 };
-const isOverTherePiece = (
+const canOrthogonal = (
   toX: number,
   toY: number,
   positions: number[][],
@@ -82,6 +107,32 @@ const isOverTherePiece = (
       if (isTherePiece(i, y, positions)) {
         return false;
       }
+    }
+  } else {
+    return true;
+  }
+  return true;
+};
+
+const canDigonal = (
+  toX: number,
+  toY: number,
+  positions: number[][],
+  [x, y]: number[]
+) => {
+  const dx = Math.abs(toX - x);
+  const dy = Math.abs(toY - y);
+  if (dx === dy) {
+    const xDirection = toX > x ? 1 : -1;
+    const yDirection = toY > y ? 1 : -1;
+    x += xDirection;
+    y += yDirection;
+    for (let i = 0; i < dx - 1; i++) {
+      if (isTherePiece(x, y, positions)) {
+        return false;
+      }
+      x += xDirection;
+      y += yDirection;
     }
   } else {
     return true;
@@ -111,4 +162,30 @@ const canMoveRook = (toX: number, toY: number, [x, y]: number[]) => {
     return false;
   }
   return dx === 0 || dy === 0;
+};
+
+const canMoveBishop = (toX: number, toY: number, [x, y]: number[]) => {
+  const dx = Math.abs(toX - x);
+  const dy = Math.abs(toY - y);
+  if (dx === 0 && dy === 0) {
+    return false;
+  }
+  return dx === dy;
+};
+
+const canMoveQueen = (toX: number, toY: number, [x, y]: number[]) => {
+  const dx = Math.abs(toX - x);
+  const dy = Math.abs(toY - y);
+  if (dx === 0 && dy === 0) {
+    return false;
+  }
+  return dx === dy || dx === 0 || dy === 0;
+};
+
+const canMoveRedPawn = (toX: number, toY: number, [x, y]: number[]) => {
+  return y - toY === 1 && toX - x === 0;
+};
+
+const canMoveBluePawn = (toX: number, toY: number, [x, y]: number[]) => {
+  return y - toY === -1 && toX - x === 0;
 };

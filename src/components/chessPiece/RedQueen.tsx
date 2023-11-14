@@ -1,10 +1,10 @@
 import { useDrag } from "react-dnd";
 import { chessPiece, chessTeam } from "../../constants/chessType";
 
-export default function RedKing() {
+export default function RedQueen() {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: chessPiece.PIECE,
-    item: { id: 4, piece: chessPiece.KING, team: chessTeam.RED },
+    item: { id: 3, piece: chessPiece.QUEEN, team: chessTeam.RED },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -24,7 +24,7 @@ export default function RedKing() {
         alignItems: "center",
       }}
     >
-      ♔
+      ♕
     </div>
   );
 }

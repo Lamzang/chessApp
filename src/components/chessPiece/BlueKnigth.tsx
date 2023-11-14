@@ -19,6 +19,9 @@ export default function BlueKnight() {
         fontWeight: "bold",
         cursor: "move",
         zIndex: 2,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       ♘

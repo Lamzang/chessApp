@@ -3,6 +3,9 @@ export enum chessPiece {
   "KNIGHT" = "knight",
   "KING" = "king",
   "ROOK" = "rook",
+  "BISHOP" = "bishop",
+  "QUEEN" = "queen",
+  "PAWN" = "pawn",
 }
 
 export enum chessTeam {
