@@ -12,7 +12,7 @@ export const Overlay = ({ color }: IOverlay) => {
         height: "100%",
         width: "100%",
         zIndex: 1,
-        opacity: 1,
+        opacity: 0.5,
         backgroundColor: color,
       }}
     ></div>

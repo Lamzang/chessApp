@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { pieceDataState } from "../recoil/chessAtoms";
 import { useDrop } from "react-dnd";
 import { chessPiece, chessTeam } from "../constants/chessType";
-import { canMovePiece } from "../util/checkMoves";
+import { canMovePiece, isTherePiece } from "../util/checkMoves";
 
 import { Overlay } from "./Overlay";
 import { renderPiece } from "../util/render";
@@ -27,6 +27,7 @@ export default function Square({ x, y, isBlack }: ISquare) {
       accept: [chessPiece.KNIGHT, chessPiece.KING],
       drop: (item: IDragItem) => {
         if (item.team === chessTeam.RED) {
+          let oppoData = {};
           const newPieceData = {
             ...pieceData,
             red: [
@@ -35,8 +36,23 @@ export default function Square({ x, y, isBlack }: ISquare) {
               ...pieceData.red.slice(item.id + 1),
             ],
           };
-          setPieceData(newPieceData);
+          if (isTherePiece(x, y, pieceData.blue)) {
+            const deadIndex = pieceData.blue.findIndex(
+              (pos) => pos[0] === x && pos[1] === y
+            );
+            oppoData = {
+              ...newPieceData,
+              blue: [
+                ...newPieceData.blue.slice(0, deadIndex),
+                [-20, -10],
+                ...newPieceData.blue.slice(deadIndex + 1),
+              ],
+            };
+          }
+
+          setPieceData({ ...newPieceData, ...oppoData });
         } else {
+          let oppoData = {};
           const newPieceData = {
             ...pieceData,
             blue: [
@@ -45,6 +61,19 @@ export default function Square({ x, y, isBlack }: ISquare) {
               ...pieceData.blue.slice(item.id + 1),
             ],
           };
+          if (isTherePiece(x, y, pieceData.red)) {
+            const deadIndex = pieceData.red.findIndex(
+              (pos) => pos[0] === x && pos[1] === y
+            );
+            oppoData = {
+              ...newPieceData,
+              blue: [
+                ...newPieceData.red.slice(0, deadIndex),
+                [-20, -10],
+                ...newPieceData.red.slice(deadIndex + 1),
+              ],
+            };
+          }
           setPieceData(newPieceData);
         }
       },

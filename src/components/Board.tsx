@@ -1,6 +1,7 @@
 import { DndProvider } from "react-dnd";
 import Square from "./Square";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import DeadPiece from "./DeadPiece";
 
 export default function Board() {
   const squares = [];
@@ -22,6 +23,7 @@ export default function Board() {
       >
         {squares}
       </div>
+      <DeadPiece />
     </DndProvider>
   );
 }

@@ -22,7 +22,11 @@ export const canMovePiece = (
   }
 };
 
-const isTherePiece = (toX: number, toY: number, positions: number[][]) => {
+export const isTherePiece = (
+  toX: number,
+  toY: number,
+  positions: number[][]
+) => {
   return positions.some(([px, py]) => px === toX && py === toY);
 };
 
