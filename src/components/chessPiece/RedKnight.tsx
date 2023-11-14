@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useDrag } from "react-dnd";
-import { chessPiece } from "../constants/chessType";
+import { chessPiece } from "../../constants/chessType";
 
-export default function Knight() {
+export default function RedKnight() {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: chessPiece.playable,
-    item: { id: 1, piece: chessPiece.playable },
+    type: chessPiece.KNIGHT,
+    item: { id: 1, piece: chessPiece.KNIGHT },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

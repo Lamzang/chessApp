@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useRecoilState } from "recoil";
-import { IPieceDataState, pieceDataState } from "./recoil/chessAtoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  IPieceDataState,
+  pieceDataState,
+  piecePositionsSelector,
+} from "../recoil/chessAtoms";
 import { useDrop } from "react-dnd";
-import Knight from "./chessPiece/Knight";
-import { chessPiece } from "./constants/chessType";
+import { chessPiece } from "../constants/chessType";
+import { canMovePiece } from "../util/checkMoves";
+import RedKnight from "./chessPiece/RedKnight";
+import RedKing from "./chessPiece/RedKing";
 
 interface ISquare {
   x: number;
@@ -11,30 +17,38 @@ interface ISquare {
   isBlack: boolean;
 }
 
-interface IDragItem {
+export interface IDragItem {
   id: number;
   piece: string;
 }
 
 export default function Square({ x, y, isBlack }: ISquare) {
   const [pieceData, setPieceData] = useRecoilState(pieceDataState);
+  const piecePositions = useRecoilValue(piecePositionsSelector);
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
-      accept: chessPiece.playable,
-      drop: () => {
-        setPieceData({
-          ...pieceData,
-          knight: { ...pieceData.knight, position: [x, y] },
-        });
+      accept: [chessPiece.KNIGHT, chessPiece.KING],
+      drop: (item: IDragItem) => {
+        if (item.piece === chessPiece.KNIGHT) {
+          setPieceData({
+            ...pieceData,
+            knight: { ...pieceData.knight, position: [x, y] },
+          });
+        } else if (item.piece === chessPiece.KING) {
+          setPieceData({
+            ...pieceData,
+            king: { ...pieceData.king, position: [x, y] },
+          });
+        }
       },
       canDrop: (item: IDragItem) =>
-        canMovePiece(item, x, y, pieceData.knight.position),
+        canMovePiece(item, x, y, pieceData, piecePositions),
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [x, y, pieceData.knight.position]
+    [x, y, pieceData.knight.position, pieceData.king.position]
   );
   return (
     <div
@@ -59,43 +73,28 @@ export default function Square({ x, y, isBlack }: ISquare) {
         {isOver && !canDrop && <Overlay color="red" />}
         {!isOver && canDrop && <Overlay color="yellow" />}
         {isOver && canDrop && <Overlay color="green" />}
-        {renderPiece(x, y, pieceData.knight.position)}
+        {renderPiece(x, y, pieceData.knight.position, chessPiece.KNIGHT)}
+        {renderPiece(x, y, pieceData.king.position, chessPiece.KING)}
       </div>
     </div>
   );
 }
 
-interface ISetDrop {
-  piece: string;
-  x: number;
-  y: number;
-  pieceData: IPieceDataState;
-  setPieceData: () => null;
-}
-
-const renderPiece = (x: number, y: number, [pieceX, pieceY]: number[]) => {
-  if (x === pieceX && y === pieceY) {
-    return <Knight />;
-  }
-};
-
-const canMovePiece = (
-  item: IDragItem,
-  toX: number,
-  toY: number,
-  [x, y]: number[]
+const renderPiece = (
+  x: number,
+  y: number,
+  [pieceX, pieceY]: number[],
+  piece: string
 ) => {
-  if (item.piece === chessPiece.playable) {
-    return canMoveKnight(toX, toY, [x, y]);
-  } else {
-    return false;
-  }
-};
+  if (x === pieceX && y === pieceY) {
+    if (piece === chessPiece.KNIGHT) {
+      return <RedKnight />;
+    }
 
-const canMoveKnight = (toX: number, toY: number, [x, y]: number[]) => {
-  const dx = Math.abs(toX - x);
-  const dy = Math.abs(toY - y);
-  return (dx === 2 && dy === 1) || (dx === 1 && dy === 2);
+    if (piece === chessPiece.KING) {
+      return <RedKing />;
+    }
+  }
 };
 
 interface IOverlay {
