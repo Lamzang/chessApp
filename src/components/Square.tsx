@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  IPieceDataState,
-  pieceDataState,
-  piecePositionsSelector,
-} from "../recoil/chessAtoms";
+import { pieceDataState, piecePositionsSelector } from "../recoil/chessAtoms";
 import { useDrop } from "react-dnd";
 import { chessPiece } from "../constants/chessType";
 import { canMovePiece } from "../util/checkMoves";
-import RedKnight from "./chessPiece/RedKnight";
-import RedKing from "./chessPiece/RedKing";
+
+import { Overlay } from "./Overlay";
+import { renderPiece } from "../util/render";
 
 interface ISquare {
   x: number;
@@ -79,41 +76,3 @@ export default function Square({ x, y, isBlack }: ISquare) {
     </div>
   );
 }
-
-const renderPiece = (
-  x: number,
-  y: number,
-  [pieceX, pieceY]: number[],
-  piece: string
-) => {
-  if (x === pieceX && y === pieceY) {
-    if (piece === chessPiece.KNIGHT) {
-      return <RedKnight />;
-    }
-
-    if (piece === chessPiece.KING) {
-      return <RedKing />;
-    }
-  }
-};
-
-interface IOverlay {
-  color: string;
-}
-
-const Overlay = ({ color }: IOverlay) => {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: "100%",
-        width: "100%",
-        zIndex: 1,
-        opacity: 1,
-        backgroundColor: color,
-      }}
-    ></div>
-  );
-};
