@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRecoilState, useRecoilValue } from "recoil";
-import { pieceDataState, piecePositionsSelector } from "../recoil/chessAtoms";
+import { pieceDataState } from "../recoil/chessAtoms";
 import { useDrop } from "react-dnd";
-import { chessPiece } from "../constants/chessType";
+import { chessPiece, chessTeam } from "../constants/chessType";
 import { canMovePiece } from "../util/checkMoves";
 
 import { Overlay } from "./Overlay";
@@ -17,35 +17,44 @@ interface ISquare {
 export interface IDragItem {
   id: number;
   piece: string;
+  team: string;
 }
 
 export default function Square({ x, y, isBlack }: ISquare) {
   const [pieceData, setPieceData] = useRecoilState(pieceDataState);
-  const piecePositions = useRecoilValue(piecePositionsSelector);
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [chessPiece.KNIGHT, chessPiece.KING],
       drop: (item: IDragItem) => {
-        if (item.piece === chessPiece.KNIGHT) {
-          setPieceData({
+        if (item.team === chessTeam.RED) {
+          const newPieceData = {
             ...pieceData,
-            knight: { ...pieceData.knight, position: [x, y] },
-          });
-        } else if (item.piece === chessPiece.KING) {
-          setPieceData({
+            red: [
+              ...pieceData.red.slice(0, item.id),
+              [x, y],
+              ...pieceData.red.slice(item.id + 1),
+            ],
+          };
+          setPieceData(newPieceData);
+        } else {
+          const newPieceData = {
             ...pieceData,
-            king: { ...pieceData.king, position: [x, y] },
-          });
+            blue: [
+              ...pieceData.blue.slice(0, item.id),
+              [x, y],
+              ...pieceData.blue.slice(item.id + 1),
+            ],
+          };
+          setPieceData(newPieceData);
         }
       },
-      canDrop: (item: IDragItem) =>
-        canMovePiece(item, x, y, pieceData, piecePositions),
+      canDrop: (item: IDragItem) => canMovePiece(item, x, y, pieceData),
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [x, y, pieceData.knight.position, pieceData.king.position]
+    [x, y, pieceData]
   );
   return (
     <div
@@ -70,8 +79,9 @@ export default function Square({ x, y, isBlack }: ISquare) {
         {isOver && !canDrop && <Overlay color="red" />}
         {!isOver && canDrop && <Overlay color="yellow" />}
         {isOver && canDrop && <Overlay color="green" />}
-        {renderPiece(x, y, pieceData.knight.position, chessPiece.KNIGHT)}
-        {renderPiece(x, y, pieceData.king.position, chessPiece.KING)}
+        {renderPiece(x, y, pieceData.red[0], "red", 0)}
+        {renderPiece(x, y, pieceData.red[1], "red", 1)}
+        {renderPiece(x, y, pieceData.blue[0], "blue", 0)}
       </div>
     </div>
   );

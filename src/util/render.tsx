@@ -1,20 +1,21 @@
+import BlueKnight from "../components/chessPiece/BlueKnigth";
 import RedKing from "../components/chessPiece/RedKing";
 import RedKnight from "../components/chessPiece/RedKnight";
-import { chessPiece } from "../constants/chessType";
 
 export const renderPiece = (
   x: number,
   y: number,
   [pieceX, pieceY]: number[],
-  piece: string
+  team: string,
+  id: number
 ) => {
   if (x === pieceX && y === pieceY) {
-    if (piece === chessPiece.KNIGHT) {
+    if (team === "red" && id === 0) {
       return <RedKnight />;
-    }
-
-    if (piece === chessPiece.KING) {
+    } else if (team === "red" && id === 1) {
       return <RedKing />;
+    } else if (team === "blue" && id === 0) {
+      return <BlueKnight />;
     }
   }
 };

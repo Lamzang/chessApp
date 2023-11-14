@@ -1,23 +1,36 @@
 import { IDragItem } from "../components/Square";
-import { chessPiece } from "../constants/chessType";
+import { chessPiece, chessTeam } from "../constants/chessType";
 import { IPieceDataState } from "../recoil/chessAtoms";
 
 export const canMovePiece = (
   item: IDragItem,
   toX: number,
   toY: number,
-  pieceData: IPieceDataState,
-  positions: number[][]
+  pieceData: IPieceDataState
 ) => {
-  if (positions.some(([px, py]) => px === toX && py === toY)) {
-    return false;
-  }
-  if (item.piece === chessPiece.KNIGHT) {
-    return canMoveKnight(toX, toY, pieceData.knight.position);
-  } else if (item.piece === chessPiece.KING) {
-    return canMoveKing(toX, toY, pieceData.king.position);
+  console.log(pieceData.red);
+  if (item.team === chessTeam.RED) {
+    if (pieceData.red.some(([px, py]) => px === toX && py === toY)) {
+      return false;
+    }
+    if (item.piece === chessPiece.KNIGHT) {
+      return canMoveKnight(toX, toY, pieceData.red[item.id]);
+    } else if (item.piece === chessPiece.KING) {
+      return canMoveKing(toX, toY, pieceData.red[item.id]);
+    } else {
+      return false;
+    }
   } else {
-    return false;
+    if (pieceData.blue.some(([px, py]) => px === toX && py === toY)) {
+      return false;
+    }
+    if (item.piece === chessPiece.KNIGHT) {
+      return canMoveKnight(toX, toY, pieceData.blue[item.id]);
+    } else if (item.piece === chessPiece.KING) {
+      return canMoveKing(toX, toY, pieceData.blue[item.id]);
+    } else {
+      return false;
+    }
   }
 };
 
